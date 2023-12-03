@@ -33,10 +33,15 @@ namespace dotnetcoreapi
             });
 
             var app = builder.Build();
+            
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
 
             app.UseAuthentication();
 
-            app.MapGet("/", () => "Hello ForwardedHeadersOptions!");
+            app.MapGet("/", () => "172.190.134.105");
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
