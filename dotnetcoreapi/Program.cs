@@ -25,23 +25,28 @@ namespace dotnetcoreapi
             builder.Services.AddSwaggerGen();
             builder.Services.AddSingleton<BooksService>();
             builder.Services.AddAuthentication();
-            builder.Services.Configure<ForwardedHeadersOptions>(options =>
+            //builder.Services.Configure<ForwardedHeadersOptions>(options =>
+            //{
+            //    {
+            //        options.KnownProxies.Add(IPAddress.Parse("172.190.134.105"));
+            //    }
+            //});
+            builder.Services.AddHttpsRedirection(options =>
             {
-                {
-                    options.KnownProxies.Add(IPAddress.Parse("172.190.134.105"));
-                }
+                options.RedirectStatusCode = (int)HttpStatusCode.PermanentRedirect;
+                options.HttpsPort = 443;
             });
 
             var app = builder.Build();
             
-            app.UseForwardedHeaders(new ForwardedHeadersOptions
-            {
-                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-            });
+            //app.UseForwardedHeaders(new ForwardedHeadersOptions
+            //{
+            //    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            //});
 
             app.UseAuthentication();
 
-            app.MapGet("/", () => "172.190.134.105");
+            //app.MapGet("/", () => "172.190.134.105");
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
