@@ -1,6 +1,7 @@
 
 using dotnetcoreapi.Models;
 using dotnetcoreapi.Services;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace dotnetcoreapi
 {
@@ -32,7 +33,12 @@ namespace dotnetcoreapi
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
 
+           // app.MapGet("/", () => "Hello ForwardedHeadersOptions!");
 
             app.MapControllers();
 
