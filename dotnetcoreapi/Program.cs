@@ -31,11 +31,11 @@ namespace dotnetcoreapi
             //        options.KnownProxies.Add(IPAddress.Parse("172.190.134.105"));
             //    }
             //});
-            builder.Services.AddHttpsRedirection(options =>
-            {
-                options.RedirectStatusCode = (int)HttpStatusCode.PermanentRedirect;
-                options.HttpsPort = 443;
-            });
+            //builder.Services.AddHttpsRedirection(options =>
+            //{
+            //    options.RedirectStatusCode = (int)HttpStatusCode.PermanentRedirect;
+            //    options.HttpsPort = 443;
+            //});
 
             var app = builder.Build();
             
@@ -55,7 +55,7 @@ namespace dotnetcoreapi
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
+          //  app.UseHttpsRedirection();
 
             app.UseAuthorization();
 
