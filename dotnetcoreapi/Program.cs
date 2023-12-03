@@ -11,6 +11,8 @@ namespace dotnetcoreapi
         {
             var builder = WebApplication.CreateBuilder(args);
 
+          
+
             // Add services to the container.
             builder.Services.Configure<BookStoreDatabaseSettings>(
     builder.Configuration.GetSection("BookStoreDatabase"));
@@ -20,8 +22,16 @@ namespace dotnetcoreapi
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddSingleton<BooksService>();
-
+            builder.Services.AddAuthentication();
             var app = builder.Build();
+
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
+            app.UseAuthentication();
+
+            app.MapGet("/", () => "Hello ForwardedHeadersOptions!");
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -33,13 +43,7 @@ namespace dotnetcoreapi
             //app.UseHttpsRedirection();
 
             app.UseAuthorization();
-            app.UseForwardedHeaders(new ForwardedHeadersOptions
-            {
-                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-            });
-
-           // app.MapGet("/", () => "Hello ForwardedHeadersOptions!");
-
+       
             app.MapControllers();
 
             app.Run();
